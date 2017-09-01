@@ -56,13 +56,13 @@ public class ZipperTest {
     @Test
     public void shouldZipFile() throws Exception {
         String tmpdir = System.getProperty("java.io.tmpdir");
-        String testZipPath = tmpdir.concat("TEST_ZIP_FILE.zip");
+        String testZipPath = tmpdir.concat(File.separator + "TEST_ZIP_FILE.zip");
 
         Path file = Files.createFile(Paths.get(tmpdir.concat(File.separator + TEST_FILE1_TXT)));
 
         Files.write(file, "TEST DATA FOR TEST FILE".getBytes());
 
-        Path zip = Zipper.zipFile(file, Paths.get(File.separator +testZipPath));
+        Path zip = Zipper.zipFile(file, Paths.get(testZipPath));
 
         Assert.assertNotNull(zip);
         Assert.assertTrue(Files.exists(zip));
