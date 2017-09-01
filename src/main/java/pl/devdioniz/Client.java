@@ -2,6 +2,7 @@ package pl.devdioniz;
 
 import pl.devdioniz.compressor.Zipper;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,7 +22,6 @@ public class Client {
         fileSet.add(Paths.get("C:\\Users\\Denis\\.IntelliJIdea2017.2\\system\\log\\idea.log.2"));
 
         Zipper.zipAllFiles(fileSet, Paths.get("C:\\temp\\MYzip.zip"));
-//        zipper.zipAllFiles();
 
     }
 }
