@@ -62,7 +62,7 @@ public class ZipperTest {
 
         Files.write(file, "TEST DATA FOR TEST FILE".getBytes());
 
-        Path zip = Zipper.zipFile(file, Paths.get(testZipPath));
+        Path zip = Zipper.zipFile(file, Paths.get(File.separator +testZipPath));
 
         Assert.assertNotNull(zip);
         Assert.assertTrue(Files.exists(zip));
