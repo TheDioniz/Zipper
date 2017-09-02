@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class ZipperTest {
 
-    static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
+    static final Path TEMP_DIR = Paths.get(System.getProperty("java.io.tmpdir") + File.separator);
     public static final String TEST_FILE1_TXT = "test.txt";
     public static final String TEST_FILE2_TXT = "test2.txt";
     public static final String TEST_ZIP = "TEST_ZIP.zip";
@@ -28,17 +28,17 @@ public class ZipperTest {
     @Before
     public void setUp() throws Exception {
 
-        Files.deleteIfExists(Paths.get(TEMP_DIR.concat(File.separator + TEST_FILE1_TXT)));
-        Files.deleteIfExists(Paths.get(TEMP_DIR.concat(File.separator + TEST_FILE2_TXT)));
-        Files.deleteIfExists(Paths.get(TEMP_DIR.concat(File.separator + TEST_ZIP)));
-        Files.deleteIfExists(Paths.get(TEMP_DIR.concat(File.separator + TEST_ZIP_FILE)));
+        Files.deleteIfExists(TEMP_DIR.resolve(TEST_FILE1_TXT));
+        Files.deleteIfExists(TEMP_DIR.resolve(TEST_FILE2_TXT));
+        Files.deleteIfExists(TEMP_DIR.resolve(TEST_ZIP));
+        Files.deleteIfExists(TEMP_DIR.resolve(TEST_ZIP_FILE));
     }
 
     @Test
     public void shouldZipAllFiles() throws Exception {
 
-        Path file1 = Files.createFile(Paths.get(TEMP_DIR.concat(File.separator + TEST_FILE1_TXT)));
-        Path file2 = Files.createFile(Paths.get(TEMP_DIR.concat(File.separator + TEST_FILE2_TXT)));
+        Path file1 = Files.createFile(TEMP_DIR.resolve(TEST_FILE1_TXT));
+        Path file2 = Files.createFile(TEMP_DIR.resolve(TEST_FILE2_TXT));
 
         Files.write(file1, "TEST DATA".getBytes());
         Files.write(file2, "TEST DATA".getBytes());
@@ -47,7 +47,7 @@ public class ZipperTest {
         files.add(file1);
         files.add(file2);
 
-        Path zipFile = Zipper.zipAllFiles(files, Paths.get(TEMP_DIR.concat(File.separator + TEST_ZIP)));
+        Path zipFile = Zipper.zipAllFiles(files, TEMP_DIR.resolve(TEST_ZIP));
 
         Assert.assertNotNull(zipFile);
         Assert.assertTrue(Files.exists(zipFile));
@@ -55,14 +55,11 @@ public class ZipperTest {
 
     @Test
     public void shouldZipFile() throws Exception {
-        String tmpdir = System.getProperty("java.io.tmpdir");
-        String testZipPath = tmpdir.concat(File.separator + TEST_ZIP_FILE);
-
-        Path file = Files.createFile(Paths.get(tmpdir.concat(File.separator + TEST_FILE1_TXT)));
+        Path file = Files.createFile(TEMP_DIR.resolve(TEST_FILE1_TXT));
 
         Files.write(file, "TEST DATA FOR TEST FILE".getBytes());
 
-        Path zip = Zipper.zipFile(file, Paths.get(testZipPath));
+        Path zip = Zipper.zipFile(file, TEMP_DIR.resolve(TEST_ZIP_FILE));
 
         Assert.assertNotNull(zip);
         Assert.assertTrue(Files.exists(zip));
@@ -70,9 +67,9 @@ public class ZipperTest {
 
     @AfterClass
     public static void cleanUp() throws Exception {
-        Files.deleteIfExists(Paths.get(TEMP_DIR.concat(File.separator + TEST_FILE1_TXT)));
-        Files.deleteIfExists(Paths.get(TEMP_DIR.concat(File.separator + TEST_FILE2_TXT)));
-        Files.deleteIfExists(Paths.get(TEMP_DIR.concat(File.separator + TEST_ZIP)));
-        Files.deleteIfExists(Paths.get(TEMP_DIR.concat(File.separator + TEST_ZIP_FILE)));
+        Files.deleteIfExists(TEMP_DIR.resolve(TEST_FILE1_TXT));
+        Files.deleteIfExists(TEMP_DIR.resolve(TEST_FILE2_TXT));
+        Files.deleteIfExists(TEMP_DIR.resolve(TEST_ZIP));
+        Files.deleteIfExists(TEMP_DIR.resolve(TEST_ZIP_FILE));
     }
 }

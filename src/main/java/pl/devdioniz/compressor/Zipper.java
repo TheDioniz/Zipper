@@ -105,8 +105,8 @@ public final class Zipper {
     }
 
     /**
-     * zips one file and creates the zip with filename
-     * and .zip suffix
+     * zips one file and creates the zip with original
+     * filename and .zip suffix
      *
      * @param filePath
      * @return
