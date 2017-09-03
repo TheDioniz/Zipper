@@ -1,16 +1,19 @@
 package pl.devdioniz.compressor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
 
 /**
  * The class serves as an util for compressing files
@@ -20,6 +23,8 @@ import java.util.zip.ZipOutputStream;
  * @author TheDioniz, created on 30.08.2017.
  */
 public final class Zipper {
+
+    private static final Logger log = LoggerFactory.getLogger(Zipper.class);
 
     private Zipper() {
     }
@@ -34,7 +39,7 @@ public final class Zipper {
     public static Path zipAllFiles(Set<Path> files, Path destZipPath) throws IOException {
 
         if (files.isEmpty()) {
-            System.err.println("Nothing to zip.");
+            log.warn("Nothing to zip.");
             return null;
         }
 
@@ -48,7 +53,7 @@ public final class Zipper {
 
             for (Path path : files) {
 
-                if (Files.exists(path)) {
+                if (path.toFile().exists()) {
 
                     byte[] buffer = new byte[1024];
 
@@ -60,7 +65,7 @@ public final class Zipper {
                         try {
                             int len;
 
-                            System.out.println("zipping file: " + ze.getName());
+                            log.info("zipping file: {}", ze.getName());
                             zos.putNextEntry(ze);
 
                             while ((len = fis.read(buffer)) > 0) {
@@ -69,18 +74,18 @@ public final class Zipper {
                             zos.closeEntry();
 
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            log.error(e.getMessage());
                         }
                     } catch (FileNotFoundException e) {
-                        System.err.println("Cannot zip file: " + path + " it does not exist.");
-                        e.printStackTrace();
+                        log.error("Cannot zip file: {} it does not exist.", path);
+                        log.error(e.getMessage());
                     }
                 }
             }
-            System.out.println("Saved to: " + destZipPath);
+            log.info("Saved to: {}", destZipPath);
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return destZipPath;
     }
